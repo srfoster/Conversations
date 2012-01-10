@@ -1,1 +1,6 @@
-Project/*
+Library/*
+Assets/*
+Temp/*
+Assembly*
+*.sln
+*.userprefs
