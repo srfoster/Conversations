@@ -19,23 +19,28 @@ public class ConversationDisplayer : MonoBehaviour {
 		GUI.Box(new Rect(Screen.width/2-width/2,Screen.height/2-height/2,width,height), conversation.GetText(), guiStyle);
 		
 		int response_height = 0;
-		foreach(DictionaryEntry response in conversation.GetResponses())
-		{
-			string response_text = response.Value as string;
-			if(GUI.Button(new Rect(Screen.width/2+width/2 + 10,Screen.height/2-height/2 + response_height,200,50), response_text))
+		if(conversation.GetResponses() != null)
+		{	
+			foreach(object responseObject in conversation.GetResponses())
 			{
-				conversation.Respond(response.Key as Object);
+				Response response = responseObject as Response;
+				
+				string response_text = response.getResponseText();
+				if(GUI.Button(new Rect(Screen.width/2+width/2 + 10,Screen.height/2-height/2 + response_height,200,50), response_text))
+				{
+					conversation.Respond(response);
+					
+					if(response.isExit())
+					{
+						conversation = null;
+					}
+				}
+				response_height += 60;
 			}
-			response_height += 60;
-		}
-		
-		if(GUI.Button(new Rect(Screen.width/2+width/2 + 10,Screen.height/2-height/2 + response_height,200,50), "(Exit)"))
-		{
-			conversation = null;
 		}
 	}
 	
-	public void Initiate(Conversation conversation)
+	public void Converse(Conversation conversation)
 	{
 		this.conversation = conversation;
 	}
